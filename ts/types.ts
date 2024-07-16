@@ -5,7 +5,7 @@ export interface Polygon {
     sizeOutsideUgandaM2?: number | BigInt
     sizeOutsideUgandaPercent?: string
     intersectRoads?: boolean
-    distanceToRoad?: number
+    distanceToMainRoadKm?: number
     intersectForest?: boolean
     intersectForestM2?: number | BigInt
     intersectForestPercent?: string

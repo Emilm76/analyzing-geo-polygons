@@ -4,11 +4,11 @@ import distance from "@turf/distance"
 import { point } from "@turf/helpers"
 import yargs from "yargs/yargs"
 import {
-  forestsArr,
-  pointsArr,
-  polygonsArr,
-  roadsArr,
-  uganda,
+  FORESTS_ARR,
+  POINTS_ARR,
+  POLYGONS_ARR,
+  ROADS_ARR,
+  UGANDA,
 } from "./constants.js"
 import {
   calcIntersection,
@@ -16,7 +16,7 @@ import {
   calcPolygonSize,
 } from "./functions/calc.js"
 import { round } from "./functions/helpers.js"
-import { saveCsvFiles, saveJsonFile } from "./functions/save-files.js"
+import { saveCsvFile, saveJsonFile } from "./functions/save-files.js"
 import {
   IntersectForest,
   IntersectPol,
@@ -34,10 +34,10 @@ let fixedPol = 0
 console.log("--fixPoints", isFixPointsOption)
 console.log("Script start...")
 
-polygonsArr.forEach((polygon: Polygon, index: number) => {
+POLYGONS_ARR.forEach((polygon: Polygon, index: number) => {
   let sizeOut: SizeOut = false
   let intersectPol: IntersectPol = false
-  let isInUganda = booleanContains(uganda, polygon)
+  let isInUganda = booleanContains(UGANDA, polygon)
 
   // Info about polygon
   const polygonPointsInfo: PointsInfo = calcPolygonPoints(
@@ -49,7 +49,7 @@ polygonsArr.forEach((polygon: Polygon, index: number) => {
 
   if (!isInUganda) {
     // Size outside Uganda
-    const u = calcIntersection(polygon, [uganda], true)
+    const u = calcIntersection(polygon, [UGANDA], true)
     sizeOut = u && {
       sizeOutsideUgandaM2: u.intM2,
       sizeOutsideUgandaPercent: u.intPercent,
@@ -59,7 +59,7 @@ polygonsArr.forEach((polygon: Polygon, index: number) => {
   // Roads intersection
   // const r = calcIntersection(polygon, roadsArr)
   let distanceArr: number[] = []
-  roadsArr.forEach((road: Polygon) => {
+  ROADS_ARR.forEach((road: Polygon) => {
     const p1 = centroid(polygon)
     road.geometry.coordinates[0].forEach((r) => {
       const p2 = centroid(point(r))
@@ -73,7 +73,7 @@ polygonsArr.forEach((polygon: Polygon, index: number) => {
   }
 
   // Forest intersection
-  const f = calcIntersection(polygon, forestsArr)
+  const f = calcIntersection(polygon, FORESTS_ARR)
   let intersectForest: IntersectForest = f && {
     intersectForest: f.int,
     intersectForestM2: f.intM2,
@@ -81,7 +81,7 @@ polygonsArr.forEach((polygon: Polygon, index: number) => {
   }
 
   // Intersection with another polygons
-  const p = calcIntersection(polygon, polygonsArr, false, true, index)
+  const p = calcIntersection(polygon, POLYGONS_ARR, false, true, index)
   intersectPol = p && {
     intersectPolygon: p.int,
     intersectPolygonNames: p.intNames,
@@ -107,13 +107,13 @@ polygonsArr.forEach((polygon: Polygon, index: number) => {
     (polygon.geometry.coordinates = [polygonPointsInfo.coordinates])
 })
 
-console.log("Total polygons: " + polygonsArr.length)
+console.log("Total polygons: " + POLYGONS_ARR.length)
 console.log("Fix polygons: " + fixedPol)
 
 // Save polygons.js file
 await saveJsonFile("./result/", "polygons.geojson", {
   type: "FeatureCollection",
-  features: [...polygonsArr, ...pointsArr],
+  features: [...POLYGONS_ARR, ...POINTS_ARR],
 })
-// Save polygons in CSV files
-await saveCsvFiles(polygonsArr, "./result/polygons-CSV/")
+// Save polygons in CSV file
+await saveCsvFile(POLYGONS_ARR, "./result/", "polygons.csv")
