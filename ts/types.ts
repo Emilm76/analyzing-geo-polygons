@@ -4,6 +4,8 @@ export interface Polygon {
     inUganda?: boolean
     sizeOutsideUgandaM2?: number | BigInt
     sizeOutsideUgandaPercent?: string
+    intersectRoads?: boolean
+    distanceToRoad?: number
     intersectForest?: boolean
     intersectForestM2?: number | BigInt
     intersectForestPercent?: string
@@ -20,7 +22,18 @@ export interface Polygon {
 
 export interface CsvObj {
   header: { id: string; title: string }[]
-  records: { [id: string]: boolean }[]
+  records: { [string: string]: any }[]
+}
+
+export interface PointsInfo {
+  props: {
+    isFixed?: boolean
+    fixedPoints?: number
+    pointsDistanceMin: number
+    pointsDistanceMax: number
+    pointsDistanceAverage: number
+  }
+  coordinates: [[number]]
 }
 
 export type SizeOut =

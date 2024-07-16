@@ -3,7 +3,11 @@ import { existsSync, writeFileSync } from "fs"
 import { mkdir } from "fs/promises"
 import { CsvObj, Polygon } from "../types"
 
-export async function saveFile(path: string, name: string, data: any) {
+export async function saveJsonFile(
+  path: string,
+  name: string,
+  data: { [prop: string]: any }
+) {
   await createFolder(path)
   writeFileSync(path + name, JSON.stringify(data))
   console.log("Create file: " + name)
@@ -11,15 +15,17 @@ export async function saveFile(path: string, name: string, data: any) {
 
 export async function saveCsvFiles(arr: Polygon[], path: string) {
   await createFolder(path)
+
   arr.forEach((obj) => {
     let flName = `Polygon ${obj.properties.label}.csv`
-    const csvObj = {
-      header: [
-        { id: "isCountry", title: "Is in country" },
-        { id: "intersection", title: "Intersection" },
-      ],
-      records: [{ isCountry: true, intersection: false }],
+    const csvObj: CsvObj = { header: [], records: [{}] }
+
+    for (const key in obj.properties) {
+      const prop = obj.properties[key as keyof typeof obj.properties]
+      csvObj.header.push({ id: key, title: key })
+      csvObj.records[0][key] = prop
     }
+
     createCsv(path + flName, csvObj)
   })
   console.log("Create CSV files")

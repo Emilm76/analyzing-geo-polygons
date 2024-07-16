@@ -220,6 +220,15 @@
     "@turf/invariant" "^7.0.0"
     tslib "^2.6.2"
 
+"@turf/centroid@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@turf/centroid/-/centroid-7.0.0.tgz#bbef6155c66b7c9bafbe8daa8ad909b1b3c7c8b2"
+  integrity sha512-TMKp5yadglNVRxX3xuk1qQDEy5JFHmlYVBamzXuD8DL8rYdVog2x4gQHrwn7xrUyAlKJ4fUZZPkYBWfW6TDWbw==
+  dependencies:
+    "@turf/helpers" "^7.0.0"
+    "@turf/meta" "^7.0.0"
+    tslib "^2.6.2"
+
 "@turf/destination@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@turf/destination/-/destination-7.0.0.tgz#8ab9eecfc95363ef64761a5241a51c80f8f8ae0d"

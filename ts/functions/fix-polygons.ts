@@ -3,46 +3,19 @@ import destination from "@turf/destination"
 import distance from "@turf/distance"
 import { point } from "@turf/helpers"
 import midpoint from "@turf/midpoint"
-import { Polygon } from "../types"
-import { average, round } from "./helpers"
+import { getDistance } from "./helpers"
 
-export function calcPolygonPoints(
-  polygon: Polygon,
-  fix: boolean,
-  fixAfterMeters: number
-) {
-  let distanceArr: number[] = []
-  let points: [number][] | [[number]] = polygon.geometry.coordinates[0]
-  let newPointsArr = [9] as [any]
-
-  if (fix) {
-    fixBugPoints(points, fixAfterMeters)
-  }
-
-  for (let i = 0; i < points.length - 1; i++) {
-    const currP = points[i]
-
-    // const dist = getDistance(currP, points[i + 1])
-    // distanceArr.push(dist.dist)
-    newPointsArr.push(currP)
-  }
-  newPointsArr.push(points[points.length - 1])
-  fix && newPointsArr.shift()
-
-  return {
-    props: {
-      pointsDistanceMin: round(Math.min(...distanceArr), 1),
-      pointsDistanceMax: round(Math.max(...distanceArr), 1),
-      pointsDistanceAverage: round(average(distanceArr), 1),
-    },
-    coordinates: newPointsArr,
-  }
+export function fixBugPoints(points: number[][], fixAfterMeters: number) {
+  const fixInfo = fix(points, fixAfterMeters)
+  points = fixEdgesCoords(points)
+  return fixInfo
 }
 
-function fixBugPoints(points: [number][] | [[number]], fixAfterMeters: number) {
+function fix(points: number[][], fixAfterMeters: number) {
   let distAroundPoints = []
   const pl = points.length
-
+  let fixedPoints = 0
+  // Get distance to other each point
   for (let i = 0; i < points.length; i++) {
     const prePoint = points[i ? i - 1 : pl - 1]
     const postPoint = points[i === pl - 1 ? 0 : i + 1]
@@ -73,10 +46,11 @@ function fixBugPoints(points: [number][] | [[number]], fixAfterMeters: number) {
 
       delete points[i]
     }
+    ++fixedPoints
   }
 
-  let edgePointsIndexes: any = []
-
+  // Get indexes of the edge points
+  let edgePointsIndexes: number[][] = []
   for (let i = 0; i < points.length; i++) {
     const p = points[i]
     if (p !== undefined) continue
@@ -90,7 +64,7 @@ function fixBugPoints(points: [number][] | [[number]], fixAfterMeters: number) {
       i = postIndex + 1
     }
 
-    function getPreIndex(arr: any[], currIndex: number) {
+    function getPreIndex(arr: number[][], currIndex: number) {
       if (arr[currIndex] === undefined) {
         const preI = currIndex !== 0 ? currIndex - 1 : arr.length - 1
 
@@ -107,7 +81,7 @@ function fixBugPoints(points: [number][] | [[number]], fixAfterMeters: number) {
       }
     }
 
-    function getPostIndex(arr: any[], currIndex: number) {
+    function getPostIndex(arr: number[][], currIndex: number) {
       if (arr[currIndex] === undefined) {
         const postI = currIndex === arr.length - 1 ? 0 : currIndex + 1
         return getPostIndex(arr, postI)
@@ -115,12 +89,13 @@ function fixBugPoints(points: [number][] | [[number]], fixAfterMeters: number) {
     }
   }
 
+  // Replace deleted point to new
   for (const arr of edgePointsIndexes) {
     const a = arr[0]
     const b = arr[1]
     const countDeletedPoints = b > a ? b - a - 1 : points.length - 1 - a + b
 
-    const newPoints: any = createNewPoints(
+    const newPoints: number[][] = createNewPoints(
       points[a],
       points[b],
       countDeletedPoints
@@ -134,20 +109,12 @@ function fixBugPoints(points: [number][] | [[number]], fixAfterMeters: number) {
     }
   }
 
-  points = fixEdgesCoords(points)
-}
-
-function getDistance(point1: number[], point2: number[]) {
-  const p1 = point(point1)
-  const p2 = point(point2)
-  const d = distance(p1, p2, {
-    units: "meters",
-  })
   return {
-    dist: d,
-    pointsCoords: [p1, p2],
+    isFixed: fixedPoints > 0,
+    fixedPoints: fixedPoints,
   }
 }
+
 function createNewPoints(
   betweenP1: number[],
   betweenP2: number[],
@@ -170,12 +137,12 @@ function createNewPoints(
   return newPoints
 }
 
-function fixEdgesCoords(coords: [number][]) {
+function fixEdgesCoords(coords: number[][]) {
   let points = coords
   const firstCoord = points[0]
   const lastCoord = points[points.length - 1]
 
-  if (firstCoord !== lastCoord) {
+  if (firstCoord[0] !== lastCoord[0] && firstCoord[1] !== lastCoord[1]) {
     points[points.length] = firstCoord
   }
   return points

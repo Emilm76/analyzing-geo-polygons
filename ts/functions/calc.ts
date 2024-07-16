@@ -2,7 +2,8 @@ import area from "@turf/area"
 import { convertArea, featureCollection } from "@turf/helpers"
 import intersect from "@turf/intersect"
 import { Polygon } from "../types"
-import { round } from "./helpers"
+import { fixBugPoints } from "./fix-polygons"
+import { average, getDistance, round } from "./helpers"
 
 export function calcIntersection(
   polygon: Polygon,
@@ -16,14 +17,14 @@ export function calcIntersection(
   let intListNames: [string?] = []
   let intMore5Percent: [string?] = []
 
-  secPolArr.forEach((secondPol: any, i) => {
+  secPolArr.forEach((secondPol: Polygon, i) => {
     if (i === ignoreIndex) return
     const intersection = intersect(featureCollection([polygon, secondPol]))
     if (intersection === null) return
     const intA = area(intersection)
     fullIntersectArea += intA
     if (listIt) {
-      const n = secondPol.properties.name
+      const n = secondPol.properties.label
       intListNames.push(n)
       if (intA / polArea > 0.05) intMore5Percent.push(n)
     }
@@ -49,6 +50,43 @@ export function calcIntersection(
     }
   }
   return false
+}
+
+export function calcPolygonPoints(
+  polygon: Polygon,
+  fix: boolean,
+  fixAfterMeters: number
+) {
+  let distanceArr: number[] = []
+  let points: [number][] | [[number]] = polygon.geometry.coordinates[0]
+  let newPointsArr = [[123]] as [[number]]
+  let fixProps: { isFixed: boolean; fixedPoints?: number } = { isFixed: false }
+
+  if (fix) {
+    fixProps = fixBugPoints(points, fixAfterMeters)
+  }
+
+  for (let i = 0; i < points.length - 1; i++) {
+    const currP = points[i]
+
+    const dist = getDistance(currP, points[i + 1])
+
+    distanceArr.push(dist.dist)
+    newPointsArr.push(currP)
+  }
+  newPointsArr.push(points[points.length - 1])
+  newPointsArr.shift()
+
+  return {
+    props: {
+      ...(fix && { isFixed: fixProps.isFixed }),
+      ...(fixProps.isFixed && { fixedPoints: fixProps.fixedPoints }),
+      pointsDistanceMin: round(Math.min(...distanceArr), 1),
+      pointsDistanceMax: round(Math.max(...distanceArr), 1),
+      pointsDistanceAverage: round(average(distanceArr), 1),
+    },
+    coordinates: newPointsArr,
+  }
 }
 
 export function calcPolygonSize(polygon: Polygon) {
