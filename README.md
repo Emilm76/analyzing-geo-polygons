@@ -2,8 +2,16 @@
 
 `yarn start`
 
-- You can use the **--fixPoints=meters** flag:
+**You can use this flags:**
 
-`yarn start --fixPoints=30`
+- `--fixPoints=30`
 
-This means that all polygon points located further than 30 meters from the neighboring ones will be deleted. Then new points will be inserted in their place.
+_This means that all polygon points located further than 30 meters from the neighboring ones will be deleted. Then new points will be inserted in their place._
+
+- `--fixKinks`
+
+_This means that all polygons with self-intersections will be corrected_
+
+**Example:**
+
+`yarn start  --fixPoints=20 --fixKinks`

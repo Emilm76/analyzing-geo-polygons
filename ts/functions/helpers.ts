@@ -1,13 +1,22 @@
 import distance from "@turf/distance"
 import { point } from "@turf/helpers"
+import yargs from "yargs/yargs"
 
-export function round(num: number, dc: number) {
-  function p(n: number) {
-    var r = 1
-    for (var i = 0; i < dc; i++) r = r * 10
-    return dc ? n * r : 1
+export function analyzeCommand() {
+  const argv = yargs(process.argv.slice(2))
+    .options({
+      fixPoints: { type: "number", default: 0 },
+      fixKinks: { type: "boolean", default: false },
+    })
+    .parseSync()
+  const isFixPoints = argv.fixPoints
+  const isFixKinks = argv.fixKinks
+  console.log("--fixPoints", isFixPoints)
+  console.log("--fixKinks", isFixKinks)
+  return {
+    isFixPoints: isFixPoints,
+    isFixKinks: isFixKinks,
   }
-  return Math.round(num * p(1)) / p(1)
 }
 
 export function average(arr: number[]) {

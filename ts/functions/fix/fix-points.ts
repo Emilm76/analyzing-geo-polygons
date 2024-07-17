@@ -3,16 +3,11 @@ import destination from "@turf/destination"
 import distance from "@turf/distance"
 import { point } from "@turf/helpers"
 import midpoint from "@turf/midpoint"
-import { getDistance } from "./helpers"
+import { getDistance } from "../helpers"
 
-export function fixBugPoints(points: number[][], fixAfterMeters: number) {
-  const fixInfo = fix(points, fixAfterMeters)
-  points = fixEdgesCoords(points)
-  return fixInfo
-}
-
-function fix(points: number[][], fixAfterMeters: number) {
+export function fixBugPoints(coords: number[][], fixAfterMeters: number) {
   let distAroundPoints = []
+  let points = coords
   const pl = points.length
   let fixedPoints = 0
   // Get distance to other each point
@@ -48,6 +43,8 @@ function fix(points: number[][], fixAfterMeters: number) {
     }
     ++fixedPoints
   }
+
+  if (fixedPoints === 0) return { props: { isFixedPoints: false } }
 
   // Get indexes of the edge points
   let edgePointsIndexes: number[][] = []
@@ -110,8 +107,11 @@ function fix(points: number[][], fixAfterMeters: number) {
   }
 
   return {
-    isFixed: fixedPoints > 0,
-    fixedPoints: fixedPoints,
+    props: {
+      isFixedPoints: !!fixedPoints,
+      ...(!!fixedPoints && { fixedPoints: fixedPoints }),
+    },
+    coords: fixEdgesCoords(points),
   }
 }
 

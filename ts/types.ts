@@ -19,21 +19,20 @@ export interface Polygon {
   id: string | number
   geometry_name?: string
 }
-
-export interface CsvObj {
-  header: { id: string; title: string }[]
-  records: { [string: string]: any }[]
+export interface Fix {
+  props: {
+    isFixedPoints?: boolean
+    fixedPoints?: number
+    isFixedKinks?: boolean
+  }
+  coords: [[number]]
 }
 
 export interface PointsInfo {
-  props: {
-    isFixed?: boolean
-    fixedPoints?: number
-    pointsDistanceMin: number
-    pointsDistanceMax: number
-    pointsDistanceAverage: number
-  }
-  coordinates: [[number]]
+  selfIntersect: boolean
+  pointsDistanceMin: number
+  pointsDistanceMax: number
+  pointsDistanceAverage: number
 }
 
 export type SizeOut =
@@ -58,3 +57,8 @@ export type IntersectPol =
       intersectPolygonM2?: number | BigInt
       intersectPolygonPercent?: string
     }
+
+export interface CsvObj {
+  header: { id: string; title: string }[]
+  records: { [string: string]: any }[]
+}

@@ -229,6 +229,23 @@
     "@turf/meta" "^7.0.0"
     tslib "^2.6.2"
 
+"@turf/clean-coords@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@turf/clean-coords/-/clean-coords-7.0.0.tgz#fb9bc1988f84d0dfd8271fd4bbc83d743958cb2b"
+  integrity sha512-kaKR4/NnhZpgC+hWY3MfPqV2KwzG4Vr66WH59GbT5B2tvAOJqAYUmq+rgyMsG6xA3fTBL3neDW0bY1DHFVcvHQ==
+  dependencies:
+    "@turf/helpers" "^7.0.0"
+    "@turf/invariant" "^7.0.0"
+    tslib "^2.6.2"
+
+"@turf/clone@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@turf/clone/-/clone-7.0.0.tgz#e7bd51047f92182e5fcfbfe08b89c68bd2e61d4c"
+  integrity sha512-bQBx/wbQoGNtZzuHetLt44NMqOCnjSXcvTWm+LJ7YTmwrqZVAjISDhFxgawY/L+G3p+ya5WoxQwZWak80uYg3A==
+  dependencies:
+    "@turf/helpers" "^7.0.0"
+    tslib "^2.6.2"
+
 "@turf/destination@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@turf/destination/-/destination-7.0.0.tgz#8ab9eecfc95363ef64761a5241a51c80f8f8ae0d"
@@ -273,6 +290,15 @@
     "@turf/helpers" "^7.0.0"
     tslib "^2.6.2"
 
+"@turf/kinks@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@turf/kinks/-/kinks-7.0.0.tgz#a7ed00a62cd9d1b835616a14f9f863e00000acc8"
+  integrity sha512-rUzx2G4NSb7f+SMjuBZBakrK4BrS3pfb67vYH8XQA28C9NBRQcZqJBCjXqA079q16GXiDpjCLianQMewtd6ksw==
+  dependencies:
+    "@turf/helpers" "^7.0.0"
+    sweepline-intersections "^1.5.0"
+    tslib "^2.6.2"
+
 "@turf/meta@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@turf/meta/-/meta-7.0.0.tgz#85f91ad874cccd2c2c3d361917e200912597c11b"
@@ -289,6 +315,17 @@
     "@turf/destination" "^7.0.0"
     "@turf/distance" "^7.0.0"
     "@turf/helpers" "^7.0.0"
+
+"@turf/simplify@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@turf/simplify/-/simplify-7.0.0.tgz#cfe03b6467b5274324feede82ece6ebfda506bcf"
+  integrity sha512-EizgFBv7LiLTfqk0BlzuKXmGj7owHksI7Q0mur+yOFGFhEmP5pWm+jYxq+pYfUZA3eki4J7kyN4Mhg5c+jhLTw==
+  dependencies:
+    "@turf/clean-coords" "^7.0.0"
+    "@turf/clone" "^7.0.0"
+    "@turf/helpers" "^7.0.0"
+    "@turf/meta" "^7.0.0"
+    tslib "^2.6.2"
 
 "@types/node@^20.14.10":
   version "20.14.10"
@@ -852,6 +889,18 @@ strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
   dependencies:
     ansi-regex "^5.0.1"
+
+sweepline-intersections@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/sweepline-intersections/-/sweepline-intersections-1.5.0.tgz#85ab3629a291875926fae0acd508496430d8a647"
+  integrity sha512-AoVmx72QHpKtItPu72TzFL+kcYjd67BPLDoR0LarIk+xyaRg+pDTMFXndIEvZf9xEKnJv6JdhgRMnocoG0D3AQ==
+  dependencies:
+    tinyqueue "^2.0.0"
+
+tinyqueue@^2.0.0:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/tinyqueue/-/tinyqueue-2.0.3.tgz#64d8492ebf39e7801d7bd34062e29b45b2035f08"
+  integrity sha512-ppJZNDuKGgxzkHihX8v9v9G5f+18gzaTfrukGrq6ueg0lmH4nqVnA2IPG0AEH3jKEk2GRJCUhDoqpoiw3PHLBA==
 
 ts-node@^10.9.2:
   version "10.9.2"

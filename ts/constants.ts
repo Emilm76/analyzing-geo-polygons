@@ -17,6 +17,9 @@ export const POINTS_ARR = JSON.parse(dataPolygons).features.filter(
 )
 
 export const POLYGON_PROPS = [
+  "isFixedPoints",
+  "fixedPoints",
+  "isFixedKinks",
   "inUganda",
   "sizeOutsideUgandaM2",
   "sizeOutsideUgandaPercent",
@@ -29,8 +32,7 @@ export const POLYGON_PROPS = [
   "intersectForest",
   "intersectForestM2",
   "intersectForestPercent",
-  "isFixed",
-  "fixedPoints",
+  "selfIntersect",
   "pointsDistanceMin",
   "pointsDistanceMax",
   "pointsDistanceAverage",
