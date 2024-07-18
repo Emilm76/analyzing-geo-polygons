@@ -1,11 +1,11 @@
-import { POINTS_ARR, POLYGONS_ARR } from "./constants.js"
+import { isKmsInputFile, POINTS_ARR, POLYGONS_ARR } from "./constants.js"
 import { fix } from "./functions/fix/fix.js"
 import { analyzeCommand } from "./functions/helpers.js"
 import { math } from "./functions/math/math.js"
 import { saveCsvFile, saveJsonFile } from "./functions/save-files.js"
 import { Fix, Polygon } from "./types.js"
 
-const { isFixPoints, isFixKinks } = analyzeCommand()
+const { isFixPoints, isFixKinks } = analyzeCommand(true)
 console.log("Script start...")
 let fixedPol = 0
 
@@ -33,10 +33,11 @@ POLYGONS_ARR.forEach((polygon: Polygon, index: number) => {
 console.log("Total polygons: " + POLYGONS_ARR.length)
 console.log("Fix polygons: " + fixedPol)
 
+const resultFolder = isKmsInputFile ? "./result-kml/" : "./result/"
 // Save polygons.js file
-await saveJsonFile("./result/", "polygons.geojson", {
+await saveJsonFile(resultFolder, "polygons.geojson", {
   type: "FeatureCollection",
   features: [...POLYGONS_ARR, ...POINTS_ARR],
 })
 // Save polygons in CSV file
-await saveCsvFile(POLYGONS_ARR, "./result/", "polygons.csv")
+await saveCsvFile(POLYGONS_ARR, resultFolder, "polygons.csv")

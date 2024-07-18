@@ -7,7 +7,7 @@ import { getDistance } from "../helpers"
 
 export function fixBugPoints(coords: number[][], fixAfterMeters: number) {
   let distAroundPoints = []
-  let points = coords
+  let points = coords.slice(0)
   const pl = points.length
   let fixedPoints = 0
   // Get distance to other each point
@@ -44,7 +44,8 @@ export function fixBugPoints(coords: number[][], fixAfterMeters: number) {
     ++fixedPoints
   }
 
-  if (fixedPoints === 0) return { props: { isFixedPoints: false } }
+  if (fixedPoints === 0 || fixedPoints === points.length)
+    return { props: { isFixedPoints: false } }
 
   // Get indexes of the edge points
   let edgePointsIndexes: number[][] = []
@@ -53,7 +54,8 @@ export function fixBugPoints(coords: number[][], fixAfterMeters: number) {
     if (p !== undefined) continue
 
     const preIndex = getPreIndex(points, i)
-    if (preIndex) {
+
+    if (preIndex !== -1) {
       edgePointsIndexes.push([preIndex])
       const postIndex = getPostIndex(points, i)
       const lastArr = edgePointsIndexes.length - 1
@@ -64,7 +66,6 @@ export function fixBugPoints(coords: number[][], fixAfterMeters: number) {
     function getPreIndex(arr: number[][], currIndex: number) {
       if (arr[currIndex] === undefined) {
         const preI = currIndex !== 0 ? currIndex - 1 : arr.length - 1
-
         return getPreIndex(arr, preI)
       } else {
         let isNewIndex = true
@@ -75,6 +76,7 @@ export function fixBugPoints(coords: number[][], fixAfterMeters: number) {
           }
         }
         if (isNewIndex) return currIndex
+        else return -1
       }
     }
 

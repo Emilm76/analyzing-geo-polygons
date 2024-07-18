@@ -11,7 +11,7 @@ export async function saveJsonFile(
 ) {
   await createFolder(path)
   writeFileSync(path + name, JSON.stringify(data))
-  console.log("Create file: " + name)
+  console.log("Create file: " + path + name)
 }
 
 export async function saveCsvFile(arr: Polygon[], path: string, name: string) {
@@ -51,7 +51,7 @@ export async function saveCsvFile(arr: Polygon[], path: string, name: string) {
   }
 
   createCsv(path + name, csvObj)
-  console.log("Create file: " + name)
+  console.log("Create file: " + path + name)
 }
 
 function createCsv(path: string, obj: CsvObj) {

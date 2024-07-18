@@ -1,6 +1,8 @@
 ## To run the script:
 
-`yarn start`
+`yarn start` _- input file is "data/good-polygons.geojson"_
+
+`yarn start:kml` _- input file is "data/24-B22Polygons.kml"_
 
 **You can use this flags:**
 

@@ -5,12 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "tsx ./ts/main.ts",
-    "test": "tsx ./ts/TEST.ts"
+    "start": "tsx ./ts/main.ts --inputFile=good-polygons.geojson",
+    "start:kml": "tsx ./ts/main.ts --inputFile=24-B22Polygons.kml"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tmcw/togeojson": "^5.8.1",
     "@turf/area": "^7.0.0",
     "@turf/bearing": "^7.0.0",
     "@turf/boolean-contains": "^7.0.0",
@@ -22,8 +23,10 @@
     "@turf/kinks": "^7.0.0",
     "@turf/midpoint": "^7.0.0",
     "@turf/simplify": "^7.0.0",
+    "@types/xmldom": "^0.1.34",
     "csv-writer": "^1.6.0",
     "ts-node": "^10.9.2",
+    "xmldom": "^0.6.0",
     "yargs": "^17.7.2"
   },
   "devDependencies": {

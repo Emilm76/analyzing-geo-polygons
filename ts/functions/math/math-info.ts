@@ -11,10 +11,10 @@ export function mathPolygonPoints(pol: Polygon) {
   let newPointsArr = [[123]] as [[number]]
 
   for (let i = 0; i < points.length - 1; i++) {
-    const currP = points[i]
+    let currP = points[i]
+    let nextP: any = points[i + 1]
 
-    const dist = getDistance(currP, points[i + 1])
-
+    const dist = getDistance(currP, nextP)
     distanceArr.push(dist.dist)
     newPointsArr.push(currP)
   }
