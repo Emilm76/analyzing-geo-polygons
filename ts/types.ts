@@ -14,7 +14,12 @@ export interface Polygon {
   }
   geometry: {
     coordinates: [[[number]]]
-    type: "Point" | "Polygon" | "MultiPolygon"
+    type:
+      | "Point"
+      | "Polygon"
+      | "MultiPolygon"
+      | "MultiLineString"
+      | "LineString"
   }
   id: string | number
   geometry_name?: string

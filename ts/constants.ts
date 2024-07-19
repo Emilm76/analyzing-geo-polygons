@@ -43,6 +43,7 @@ export const POLYGON_PROPS = [
   "sizeOutsideUgandaM2",
   "sizeOutsideUgandaPercent",
   "distanceToMainRoadKm",
+  "distanceToForestKm",
   "intersectPolygon",
   "intersectPolygonNames",
   "intersectMoreFivePercent",

@@ -30,7 +30,9 @@ export async function saveCsvFile(arr: Polygon[], path: string, name: string) {
   // For each polygon
   arr.forEach((obj, i) => {
     const props = obj.properties
-    csvObj.records.push({ POLYGON_NAME: "Polygon - " + props.label })
+    csvObj.records.push({
+      POLYGON_NAME: "Polygon - " + (props.label || props.name),
+    })
 
     // For each properties
     POLYGON_PROPS.forEach((key) => {

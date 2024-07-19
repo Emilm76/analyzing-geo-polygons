@@ -1,7 +1,4 @@
 import booleanContains from "@turf/boolean-contains"
-import centroid from "@turf/centroid"
-import distance from "@turf/distance"
-import { point, round } from "@turf/helpers"
 import {
   FORESTS_ARR,
   POLYGONS_ARR,
@@ -15,6 +12,7 @@ import {
   Polygon,
   SizeOut,
 } from "../../types.js"
+import { getDistanceBetweenPolygons } from "../helpers.js"
 import { mathPolygonPoints, mathPolygonSize } from "./math-info.js"
 import { mathIntersection } from "./math-intersection.js"
 
@@ -30,22 +28,6 @@ export function math(polygon: Polygon, index: number) {
       sizeOutsideUgandaM2: u.intM2,
       sizeOutsideUgandaPercent: u.intPercent,
     }
-  }
-
-  // Roads intersection
-  // const r = calcIntersection(polygon, roadsArr)
-  let distanceArr: number[] = []
-  ROADS_ARR.forEach((road: Polygon) => {
-    const p1 = centroid(polygon)
-    road.geometry.coordinates[0].forEach((r) => {
-      const p2 = centroid(point(r))
-      const d = distance(p1, p2)
-      distanceArr.push(d)
-    })
-  })
-  let roadsInfo = {
-    // intersectRoads: r && r.int,
-    distanceToMainRoadKm: round(Math.min(...distanceArr), 1),
   }
 
   // Forest intersection
@@ -73,7 +55,8 @@ export function math(polygon: Polygon, index: number) {
   return {
     inUganda: isInUganda,
     ...(sizeOut && sizeOut),
-    ...roadsInfo,
+    distanceToMainRoadKm: getDistanceBetweenPolygons(polygon, ROADS_ARR),
+    distanceToForestKm: getDistanceBetweenPolygons(polygon, FORESTS_ARR),
     ...(intersectPol ? intersectPol : { intersectPolygon: false }),
     ...(intersectForest ? intersectForest : { intersectForest: false }),
     ...polygonPointsInfo,

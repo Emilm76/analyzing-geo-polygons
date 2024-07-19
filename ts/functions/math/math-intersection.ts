@@ -22,7 +22,7 @@ export function mathIntersection(
     const intA = area(intersection)
     fullIntersectArea += intA
     if (listIt) {
-      const n = secondPol.properties.label
+      const n = secondPol.properties.label || secondPol.properties.name
       intListNames.push(n)
       if (intA / polArea > 0.05) intMore5Percent.push(n)
     }

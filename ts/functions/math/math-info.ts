@@ -2,7 +2,7 @@ import area from "@turf/area"
 import { convertArea, featureCollection, round } from "@turf/helpers"
 import kinks from "@turf/kinks"
 import { Polygon } from "../../types"
-import { average, getDistance } from "../helpers"
+import { average, getDistanceBetweenPoints } from "../helpers"
 
 export function mathPolygonPoints(pol: Polygon) {
   const isKink = !!kinks(featureCollection([pol])).features.length
@@ -14,7 +14,7 @@ export function mathPolygonPoints(pol: Polygon) {
     let currP = points[i]
     let nextP: any = points[i + 1]
 
-    const dist = getDistance(currP, nextP)
+    const dist = getDistanceBetweenPoints(currP, nextP)
     distanceArr.push(dist.dist)
     newPointsArr.push(currP)
   }

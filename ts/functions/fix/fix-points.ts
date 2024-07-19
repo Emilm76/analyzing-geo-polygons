@@ -3,7 +3,7 @@ import destination from "@turf/destination"
 import distance from "@turf/distance"
 import { point } from "@turf/helpers"
 import midpoint from "@turf/midpoint"
-import { getDistance } from "../helpers"
+import { getDistanceBetweenPoints } from "../helpers"
 
 export function fixBugPoints(coords: number[][], fixAfterMeters: number) {
   let distAroundPoints = []
@@ -15,8 +15,8 @@ export function fixBugPoints(coords: number[][], fixAfterMeters: number) {
     const prePoint = points[i ? i - 1 : pl - 1]
     const postPoint = points[i === pl - 1 ? 0 : i + 1]
     const currP = points[i]
-    const distLeft = getDistance(currP, prePoint).dist
-    const distRight = getDistance(currP, postPoint).dist
+    const distLeft = getDistanceBetweenPoints(currP, prePoint).dist
+    const distRight = getDistanceBetweenPoints(currP, postPoint).dist
 
     distAroundPoints.push([
       !!(distLeft > fixAfterMeters),
